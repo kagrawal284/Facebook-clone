@@ -1,0 +1,112 @@
+
+{% comment %} <form action = "" method = "POST">
+    {% csrf_token %}
+    {{banana.as_p}}
+    <button type = "submit"> Create account</button>
+</form> {% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="facebook_prj/static/login.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-md-6 d-flex justify-content-center align-items-center left-side">
+                <div class="text-center">
+                    <h1 class="display-1 text-primary">facebook</h1>
+                    <p class="lead">Connect with friends and the world around you on Facebook.</p>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center align-items-center right-side">
+                <div class="login-form">
+                    <form method = "POST" action = "{% url 'userauths:sign-in' %}" >
+                        {%csrf_token%}
+                        
+                        <div class="form-group">
+                            <input type="email" name = "email" class="form-control" id="email" placeholder="Email address "   autocomplete="off" >
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name = "password" class="form-control" id="password" placeholder="Password"  autocomplete="off" >
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+                        <div class="text-center mt-3">
+                            <a href="#">Forgotten password?</a>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#registerModal">Create New Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Sign Up</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method = "POST">
+                        {%csrf_token%}
+                        <div class="form-group">
+                            {{form.full_name}}
+                            
+                        </div>
+                        <div class="form-group">
+                            {{form.username}}
+                            
+                        </div>
+                        <div class="form-group">
+                            {{form.email}}
+                            
+                        </div>
+
+                        <div class="form-group">
+                            {{form.password1}}
+                            
+                        </div>
+
+                        <div class="form-group">
+                            {{form.password2}}
+                            
+                        </div>
+
+                        <div class="form-group">
+                            {{form.gender}}
+                            
+                        </div>
+
+                        <div class="form-group">
+                            {{form.phone}}
+                            
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

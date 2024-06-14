@@ -1,0 +1,535 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{profile.user.profile.full_name}} Profile Page</title>
+
+  <style>
+    .dropdown:hover, .dropdown-menu{
+      display:block;
+    }
+  
+    summary::marker{
+      content: "";
+    }
+  
+  </style> 
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <link rel="stylesheet" href="{% static "profilepage.css" %}" >
+
+
+</head>
+<body>
+    <main>
+
+        <header>
+          <div class="flex">
+            <div class="td" id="logo">
+              <a href="#"><i class="fab fa-facebook-square"></i></a>
+            </div>
+            <div class="td" id="search-form">
+              <form method="get" action="#">
+                <input type="text" placeholder="Search Facebook">
+                <button type="submit"><i class="material-icons">search</i></button>
+              </form>
+            </div>
+
+        </header>
+        <div id="profile-upper">
+          <div id="profile-banner-image">
+            <img src="{{profile.user.profile.cover_image.url}}" alt="Banner image">
+          </div>
+          <div id="profile-d">
+            <div id="profile-pic">
+              <img src="{{profile.user.profile.image.url}}">
+            </div>
+            <div id="u-name">{{profile.user.profile.full_name}}</div>
+            <div class="tb" id="m-btns">
+
+        {% if request.user != profile.user%}
+             
+            {% if profile.user in request.user.profile.friends.all %}
+              <div class="td">
+                <a id = "unfriend" data-unfriend = "{{profile.user.id}}"href = "#" class = "flex items-center justify-center h-10 px-3 rounded-md bg-blue-600 text-white unfriend{{profile.user.id}}"  style = "font-size: 18px; font-weight: bold;"> 
+                   <span id = "unfriend-text"><i></i> Unfriend </span>
+                </a>
+              </div>
+
+            {% else %}
+              {% if bool == True%}
+                <div class="td">
+                    <a id = "add-friend" data-friend-id = "{{profile.user.id}}" href = "#" class = "flex items-center justify-center h-10 px-2 rounded-md bg-blue-600 text-white add-friend{{profile.user.id}}"  style = "font-size: 18px; font-weight: bold;"> 
+                        <span id = "add-friend-text"><i></i> Cancel Request </span>
+                    </a>
+                </div>
+
+              {% else %}
+                <div class="td">
+                    <a id = "add-friend" data-friend-id = "{{profile.user.id}}" href = "#" class = "flex items-center justify-center h-10 px-5 rounded-md bg-blue-600 text-white add-friend{{profile.user.id}}"  style = "font-size: 18px; font-weight: bold;"> 
+                        <span id = "add-friend-text"><i></i>Add Friend </span>
+                    </a>
+                </div>
+
+              {% endif %}
+
+            {% endif %}
+
+        {% endif %}
+
+            </div>
+          </div>
+          <div id="black-grd"></div>
+        </div>
+        <div id="main-content">
+          <div class="tb">
+            <div class="td" id="l-col">
+              <div class="l-cnt">
+                <div class="cnt-label">
+                  <i class="l-i" id="l-i-i"></i>
+                  <span>Intro</span>
+                  <div class="lb-action"><i class="material-icons">edit</i></div>
+                </div>
+                <div id="i-box">
+                  <div id="intro-line">{{profile.user.profile.bio}}</div>
+                  <div id="u-loc"><i class="material-icons">location_on</i><a href="#">Bengaluru</a>, <a href="#">India</a></div>
+                </div>
+              </div>
+              <div class="l-cnt l-mrg">
+                <div class="cnt-label">
+                  <i class="l-i" id="l-i-p"></i>
+                  <span>Friends ({{profile.user.profile.friends.all.count}})</span>
+                  <div class="lb-action" id="b-i"><i class="material-icons">keyboard_arrow_down</i></div>
+                </div>
+                <div id="photos">
+                  <div class = "grid grid-cols-3 gap-x-1 gap-y-1 mt-3">
+
+                    {% for f in profile.friends.all%}
+                    <div class = "card p-2" >
+                      <a href="#">
+
+                        <img src = "{{f.profile.image.url}}" class = "h-36 object-cover rounded-md shadow-sm w-full">
+
+                      </a>
+
+                      <div class = "pt-3 px-1">
+                        <a href = "#" class = "text-base mb-0.5">{{f.profile.full_name}}</a>
+
+
+                      </div>
+
+                    </div>
+
+                    {% endfor %}
+
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="l-cnt l-mrg">
+                <div class="cnt-label">
+                  <i class="l-i" id="l-i-k"></i>
+                  <span>Did You Know<i id="k-nm">1</i></span>
+                </div>
+                <div>
+                  <div class="q-ad-c">
+                    <a href="#" class="q-ad">
+                      <img src="https://imagizer.imageshack.com/img923/1849/4TnLy1.png">
+                      <span>My favorite superhero is...</span>
+                    </a>
+                  </div>
+                  <div class="q-ad-c">
+                    <a href="#" class="q-ad" id="add_q">
+                      <i class="material-icons">add</i>
+                      <span>Add Answer</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div id="t-box">
+                <a href="#">Privacy</a> <a href="#">Terms</a> <a href="#">Advertising</a> <a href="#">Ad Choices</a> <a href="#">Cookies</a> <span id="t-more">More<i class="material-icons">arrow_drop_down</i></span>
+                <div id="cpy-nt">Facebook &copy; <span id="curr-year"></span></div>
+              </div>
+            </div>
+            <div class="col-md-6 "  style = "max-width:98%">
+              <div class="main-content">
+                  <!-- Post Box -->
+
+                  {%  if request.user == profile.user%}
+
+                  <form id = "post-form" method = "POST" enctype = "multipart/form-data">
+                      {%csrf_token%}
+                  <div class="card mb-4">
+                      <div class="card-body">
+                          <div class="d-flex ">
+                              <img src="{{request.user.profile.image.url}}" alt="Profile Picture" class="rounded-circle mr-3" style = "width:10%; height:30%;">
+                          
+                              <div style="width: 100%;">
+                                  <textarea  id = "postContent" class="form-control" rows="3" placeholder="What's on your mind?"  ></textarea>
+                                  <button type="button" class="btn btn-primary" id = "create-post-button" data-toggle="modal" data-target="#postModal" onclick="handleButtonClick()">Create Post</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="modal fade post-modal" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content" id = "create-post-modal" uk-modal>
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="postModalLabel">Create Post</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form>
+                              <div class="form-group">
+
+                                  <div class="d-flex align-items-center mb-3">
+                                      <img src="{{request.user.profile.image.url}}" alt="Profile Picture" class="rounded-circle mr-3" style = "width:10%; height:30%;">
+                                      <textarea class="form-control" id="post-caption" rows="3" placeholder="What's on your mind?" style = "border:none"></textarea>
+                                  </div>
+                                  <div class = "flex flex-1 p-5 w-100">
+                                      <div class = "flex-1 pt-2">
+                                          <img src = "abc.jpg" id = "preview_post_thumbnail"  style = "width:100%; height: 200px;object-fit:cover; border-radius: 10px;" alt = "" for = "post-thumbnail">
+
+                                       </div>
+
+                                  </div>
+                       
+                              
+                              </div>
+
+                            
+
+
+                              <script>
+                                  var loadFile = function(event){
+                                      var output2 = document.getElementById("preview_post_thumbnail")
+                                      output2.src = URL.createObjectURL(event.target.files[0])
+                                      output2.onload = function(){
+                                          URL.revokeObjectURL(output2.src)
+                                      }
+
+                                  }
+
+
+
+
+                              </script>
+
+
+
+
+
+                              <div class="form-group">
+
+                                  <label for="post-thumbnail" class="bg-blue-100 h-9 p-1.5 rounded-full text-blue-600 w-9 cursor-pointer flex items-center justify-center">
+                                      <svg class="w-6 h-6" fill="blue" stroke="currentColor" viewBox="0 0 24 24">
+                                          <!-- You can place SVG path data here to create an icon -->
+                                      </svg>
+                                  </label>
+                                <input onchange = "loadFile(event)" type="file"  name = "post-thumbnail" class="form-control-file" id="post-thumbnail">
+                              </div>
+
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}
+                            <button type="submit" class="btn btn-primary" id = "share-button" onclick="handlePostClick()">Share</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                  {% endif %}
+                  <!-- Feed -->
+                  <div class="container mt-4">
+                      <div class="row">
+                          <div class="col-md-8 offset-md-2">
+
+                              <!--Starting the card div-->
+
+                              {% for p in posts %}
+                                  <div class="card mb-3">
+                                      <div class="card-body">
+                                          <div class="d-flex align-items-center mb-3">
+                                              <img src="{{p.user.profile.image.url}}" alt="Profile Picture" class="rounded-circle mr-3" style = "width:11%; height:30%;">
+                                              <div>
+                                                  <h5 class="mb-0">{{p.user.full_name}}</h5>
+                                                  <small class="text-muted">{{p.date|timesince}}</small>
+                                              </div>
+                                          </div>
+
+                                          {% if p.title%}
+                                              <p class = " pt-0 border-b dark:border-gray-700">{{p.title}}</p>
+                                          {% endif %}
+
+
+                                          {% if p.image%}
+                                              <img src="{{p.image.url}}" class="img-fluid mb-3" alt="Post Image">
+                                          {%endif%}
+                                      
+                                          {% comment %} <hr> {% endcomment %}
+
+                                          <div class = "flex items-center space-x-3 pt-2" style = "padding-bottom:.5rem">
+
+                                     
+                                              <div class="flex items-center">
+
+                                                  {% for i in p.likes.all|slice:"3"   %}
+
+                                                          {% if forloop.first %}
+                                                              <img src = "{{i.profile.image.url}}" alt = "" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900">
+
+                                                          {% else %}
+                                                              <img src = "{{i.profile.image.url}}"  alt = "" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900 -ml-2">
+
+                                                          {% endif %}
+
+                                                  {% endfor %}
+
+                                              </div>
+                                              <div class = "dark:text-gray-100">
+
+                                                  <strong><span id = "like-count{{p.id}}"> {{p.likes.all.count}} </span></strong> likes
+                                         
+
+                                              </div>
+                                      
+
+                                      
+                                          </div>
+
+
+                                          <div class="d-flex justify-content-around">
+                                              <button type="button" class="btn btn-outline-primary btn-sm  likes-btn {% if request.user in p.likes.all %} liked {% else %} unliked {% endif %}  like-btn{{p.id}}"   id = "like-btn" data-like-btn="{{p.id}}">Like</button>
+                                              <button type="button" class="btn btn-outline-primary btn-sm"><span id = "comment-count{{p.id}}">{{p.post_comments.count}}</span>Comment</button>
+                                              <button type="button" class="btn btn-outline-primary btn-sm">Share</button>
+                                          </div>
+
+                                          <div class="comment-section">
+                                              <form class="comment-form" id="comment-form">
+                                                  <img src="{{request.user.profile.image.url}}" alt="User Avatar">
+                                                  <textarea id="comment-input{{p.id}}" rows="1" placeholder="Write a comment..."   data-comment-input = "{{p.id}}" class = "comment-input{{p.id}}"></textarea>
+
+
+                                                  <a style = "cursor:pointer;" id = "comment-btn"  class = "comment-btn{{p.id}}" data-comment-btn = "{{p.id}}">
+
+                                                      <ion-icon name = "send-outline" class = "hover:bg-gray-200 p-1.5 rounded-full"></ion-icon>
+
+                                                  </a>
+
+                                               </form>
+                                  
+                                              <ul class="comment-list" id="comment-div{{p.id}}">
+                                                  <!-- Example comment item -->
+
+                                                  {% for c in p.post_comments|slice:"2" %}
+
+                                                      <li class="comment-item" id = "comment-div{{c.id}}">
+                                                      <img src="{{c.user.profile.image.url}}" alt="User Avatar">
+                                                      <div class="comment-content">
+                                                          <div class="author">{{c.user.full_name}}</div>
+                                                          <div class ="flex">
+                                                              <div class="text flex-grow">{{c.comment}}</div>
+                                                              {% if c.user == request.user %}
+
+                                                              <button class = "ml-auto" id = "delete-comment" data-delete-comment="{{c.id}}">
+                                                                  <i class = "fas fa-trash text-red-500"></i>
+
+                                                              </button>
+
+                                                              {% endif %}
+         
+
+                                                          </div>
+
+                                                          <div class="timestamp">{{c.date|timesince}}</div>
+                                                          <div class="comment-actions">
+                                                              <a  id = "like-comment-btn" data-like-comment = "{{c.id}}"  class = "like-comment{{c.id}}"  {% if request.user in c.likes.all %} style = "color: #007bff; cursor: pointer;" {% else %} style = "color: gray; cursor: pointer;" {% endif %} >Like</a>
+                                                              <span id = "comment-likes-count{{c.id}}"  {% if c.likes.all.count > 0 %} style = "color: #007bff; cursor: pointer ; margin-left: 0.20rem;" {% else %} style = "color: gray; cursor: pointer; margin-left: 0.20rem;" {% endif %} > {{c.likes.all.count}}</span>
+                                                            
+                                                              <!--Adding comment feature-->
+                                                              <details>
+                                                                  <summary>
+                                                                    <div class = "" style = "margin-left:1rem;">Reply</div>
+                                                                  </summary>
+                                                                  <details-menu role = "menu" class = "origin-topf-right relative right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                                    <div class = "pyf-1" role = "none">
+                                                                      <div  class = "p-1 d-flex" >
+                                                                        <input type = "text" class = "with-border" name = "" placeholder ="Write your reply" id = "reply-input{{c.id}}">
+                                                                        <button id = "reply-comment-btn" data-reply-comment-btn = "{{c.id}}" type = "submit" class = "block w-fulfl text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 reply-comment-btn{{c.id}}" role = "menuitem">
+                                                                          <ion-icon name= "send"></ion-icon>
+                                                                        </button>
+                                                                      </div>
+                                                                
+                                                                    </div>
+                                                                
+                                                                  </details-menu>
+                                                                  
+                                                                </details>
+
+                               
+                                                                                                                               
+                                                          </div>
+
+                                                      
+
+                                                      <div class ="reply-div{{c.id}}" >
+
+                                                           {% for c in c.comment_replies|slice:"1" %}
+                                                            <!--Reply comment-->
+                                                          <div class = "flex mr-12" style = "margin-right: 20px; margin-top: 20px;" id = "reply-div{{c.id}}">
+                                                              <div class = "w-10 h-10 rounded-full relative flex-shrink-0">
+                                                                  <img src = "{{c.user.profile.image.url}}"
+                                                                      style = "width: 40px; height: 40px;" alt = "" class = "absolute h-full rounded-full w-full">
+
+                                                              </div>
+
+                                                              <div>
+
+                                                                  <div class = "text-gray-700 py-2 px-3 rounded-md bg-gray-100
+                                                                      relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
+
+                                                                      <div class = "flex">
+                                                                      <p class = "leading-6 flex-grow">{{c.reply}}</p>
+
+                                                                      {% if c.user == request.user%}
+
+                                                                      <button class = "ml-auto text-xs" id = "delete-reply" data-delete-reply="{{c.id}}">
+                                                                          <i class = "fas fa-trash text-red-500 "></i>
+      
+                                                                      </button>
+
+                                                                      {% endif %}
+                                                                      
+                                                                      </div>
+                                                                      <div class = "absolute w-3 h-3 top-3 -left-1 bg-gary-100
+                                                                          transform rotate-45 dark:bg-gray-800">
+                                                                      </div>
+
+                                                                   </div>
+
+                                                              </div>
+
+                                                          </div>                                                                
+
+                                                           {% endfor %}
+
+
+
+                                                      </div>
+
+
+
+                                                  </div>
+                                                      </li>
+
+                                                  {% empty %}
+
+                                                      <li class="comment-item">
+                                                 
+                                                      <div class="comment-content text">No comments yet.</div>
+                                                     
+                                                  </li>
+
+                                                  {% endfor %}
+
+                                                  {%  if p.post_comments.count > 0 %}
+                                                  <a href ="{% url 'core:post-detail' p.slug %}" class = "hover: text-blue-600 hover:underline"> View all {{p.post_comments.count}} comments</a>
+                                                  {% endif %}
+
+                                              </ul>
+                                          </div>
+      
+                                      </div>
+                                  </div>
+
+                              {% endfor %}
+                              <!-- Repeat the card div for multiple posts -->
+
+                             
+
+
+
+
+
+
+              
+                          </div>
+                      </div>
+                  </div>
+              
+
+                  <script>
+                      function handleButtonClick() {
+                          // JavaScript code to execute when the label is clicked
+                          console.log(' Create Post button clicked!');
+                      }
+
+
+
+                      function handlePostClick() {
+                          // JavaScript code to execute when the label is clicked
+                          console.log(' Share button clicked!');
+                      }
+                  </script>
+
+
+
+
+
+
+
+                  {% comment %} <div class="card mb-4">
+                      <div class="card-body">
+                          <h5 class="card-title">User Name</h5>
+                          <p class="card-text">This is a post on the feed.</p>
+                          <p class="card-text"><small class="text-muted">Posted 3 mins ago</small></p>
+                      </div>
+                  </div> {% endcomment %}
+                  <!-- Additional posts can be added similarly -->
+              </div>
+          </div>
+           
+          </div>
+        </div>
+      </main>
+
+      <script>
+
+        var date = new Date();
+        document.getElementById("curr-year").innerHTML = date.getFullYear();
+
+
+      </script>
+
+         <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src= "https://code.jquery.com/jquery-3.7.1.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+   {% comment %} <script src="~/jquery-3.7.1.js"></script> {% endcomment %}
+   <script src={% static "js/jquery-3.7.1.js" %}></script>
+   <script src = {% static "js/function.js" %}></script>
+
+   
+
+    </body>
+</html>
